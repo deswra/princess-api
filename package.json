@@ -1,0 +1,14 @@
+{
+  "name": "princess-mltd-api",
+  "version": "0.0.1",
+  "description": "A wrapper for interacting with matsurihi.me's MLTD API",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Des",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.6.0"
+  }
+}
