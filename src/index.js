@@ -1,14 +1,17 @@
 const fetch = require('node-fetch');
+const queryString = require('query-string');
 
 const { AppVersion, AssetVersion } = require('./version');
+const { Card } = require('./card');
+const { Event, Borders, BorderPoints } = require('./event');
 
 const HOST = 'https://api.matsurihi.me/mltd/v1/';
 
 class Princess {
-  constructor(server = 'ja', prettyPrint = false, host = HOST) {
-    this.server = server;
-    this.prettyPrint = prettyPrint;
-    this.host = host;
+  constructor(options = {}) {
+    this.server = options.server || 'ja';
+    this.prettyPrint = options.prettyPrint || false;
+    this.host = options.host || HOST;
   }
 
   getVersion = async (type, version) => {
@@ -28,8 +31,66 @@ class Princess {
     }
   };
 
-  query = (path) =>
-    fetch(`${this.host}${this.server}${path}?prettyPrint=${this.prettyPrint}`).then((res) => res.json());
+  getCard = async (cardId) => {
+    const response = await this.query(`/cards/${cardId}`);
+    return response.map((item) => new Card(item));
+  };
+
+  getCards = async (options) => {
+    const response = await this.query('/cards', options);
+    return response.map((item) => new Card(item));
+  };
+
+  getEvent = async (eventId) => {
+    const response = await this.query(`/events/${eventId}`);
+    return new Event(response);
+  };
+
+  getEvents = async (options) => {
+    const response = await this.query('/events', options);
+    return response.map((item) => new Event(item));
+  };
+
+  getBorders = async (eventId) => {
+    const response = await this.query(`/events/${eventId}/rankings/borders`);
+    return new Borders(response);
+  };
+
+  getBorderPoints = async (eventId) => {
+    const response = await this.query(`/events/${eventId}/rankings/borderPoints`);
+    return new BorderPoints(response);
+  };
+
+  getSummaries = async (eventId, type) => {
+    const response = await this.query(`/events/${eventId}/rankings/summaries/${type}`);
+    return response;
+  };
+
+  getIdolPointSummaries = async (eventId, idolId) => {
+    const response = await this.query(`/events/${eventId}/rankings/summaries/idolPoint/${idolId}`);
+    return response;
+  };
+
+  query = (path, queries) => {
+    console.log(
+      queryString.stringifyUrl(
+        {
+          url: `${this.host}${this.server}${path}`,
+          query: { ...queries, prettyPrint: this.prettyPrint },
+        },
+        { arrayFormat: 'comma' }
+      )
+    );
+    return fetch(
+      queryString.stringifyUrl(
+        {
+          url: `${this.host}${this.server}${path}`,
+          query: { ...queries, prettyPrint: this.prettyPrint },
+        },
+        { arrayFormat: 'comma' }
+      )
+    ).then((res) => res.json());
+  };
 }
 
 module.exports = Princess;
