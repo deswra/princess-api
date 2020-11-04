@@ -9,7 +9,7 @@
   "author": "Des",
   "license": "ISC",
   "dependencies": {
-    "node-fetch": "^2.6.0",
-    "query-string": "^6.13.1"
+    "node-fetch": "^2.6.1",
+    "query-string": "^6.13.6"
   }
 }

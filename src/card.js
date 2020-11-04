@@ -1,5 +1,5 @@
 class Card {
-  constructor(data) {
+  constructor(data, api) {
     this.id = data.id;
     this.name = data.name;
     this.sortId = data.sortId;
@@ -40,6 +40,7 @@ class Card {
     this.skillLevelMax = data.skillLevelMax;
     this.skillName = data.skillName;
     this.addDate = data.addDate;
+    this.api = api;
   }
 }
 
