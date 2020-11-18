@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const queryString = require('query-string');
+const dayjs = require('dayjs');
 
 const { AppVersion, AssetVersion } = require('./version');
 const { Card } = require('./card');
@@ -58,6 +59,7 @@ class Princess {
   };
 
   getEvents = async (options) => {
+    if (options && options.at) options.at = dayjs(options.at).format();
     const response = await this.query('/events', options);
     return response.map((item) => new Event(item, this));
   };
@@ -88,17 +90,8 @@ class Princess {
 
   searchLounges = async (name) => searchLounges(name, this);
 
-  query = (path, queries) => {
-    console.log(
-      queryString.stringifyUrl(
-        {
-          url: `${this.host}${this.server}${path}`,
-          query: { ...queries, prettyPrint: this.prettyPrint },
-        },
-        { arrayFormat: 'comma' }
-      )
-    );
-    return fetch(
+  query = (path, queries) =>
+    fetch(
       queryString.stringifyUrl(
         {
           url: `${this.host}${this.server}${path}`,
@@ -107,7 +100,6 @@ class Princess {
         { arrayFormat: 'comma' }
       )
     ).then((res) => res.json());
-  };
 }
 
 module.exports = Princess;

@@ -1,3 +1,5 @@
+const dayjs = require('dayjs');
+const isBetween = require('dayjs/plugin/isBetween');
 const { getLoungeEventLogs } = require('./lounge');
 
 class Event {
@@ -8,6 +10,53 @@ class Event {
     this.schedule = new Schedule(data.schedule);
     this.name = data.name;
     this.api = api;
+  }
+
+  get shortName() {
+    if (!this.name.includes('～')) return this.name;
+    return this.name.substring(this.name.indexOf('～') + 1, this.name.lastIndexOf('～'));
+  }
+
+  get hasBorders() {
+    if (this.type === 1 || this.type === 2 || this.type === 6 || this.type === 7 || this.type === 9)
+      return false;
+    return true;
+  }
+
+  get appealTypeName() {
+    switch (this.appealType) {
+      case 1:
+        return 'vocal';
+      case 2:
+        return 'dance';
+      case 3:
+        return 'visual';
+    }
+  }
+
+  get typeName() {
+    switch (this.type) {
+      case 1:
+        return 'THEATER SHOW TIME☆';
+      case 2:
+        return 'Millicolle!';
+      case 3:
+        return 'Platinum Star Theater';
+      case 4:
+        return 'Platinum Star Tour';
+      case 5:
+        return 'Anniversary';
+      case 6:
+        return 'MILLION LIVE WORKING☆';
+      case 7:
+        return 'April Fools';
+      case 9:
+        return 'Millicolle! (box gacha)';
+      case 10:
+        return 'Platinum Star Twin Stage';
+      case 11:
+        return 'Platinum Star Tune';
+    }
   }
 
   getBorders = () => getEventBorders(this.id, this.api);
@@ -35,47 +84,29 @@ class Schedule {
     this.boostBeginDate = data.boostBeginDate;
     this.boostEndDate = data.boostEndDate;
   }
-}
 
-class Borders {
-  constructor(data, api) {
-    this.eventPoint = data.eventPoint;
-    this.highScore = data.highScore;
-    this.highScore2 = data.highScore2;
-    this.highScoreTotal = data.highScoreTotal;
-    this.loungePoint = data.loungePoint;
-    this.idolPoint = data.idolPoint;
-    this.api = api;
+  get isCurrent() {
+    dayjs.extend(isBetween);
+    if (dayjs().isBetween(dayjs(this.beginDate), dayjs(this.endDate))) return true;
+    return false;
   }
-}
 
-class BorderPoints {
-  constructor(data, api) {
-    this.eventPoint = data.eventPoint ? new Points(data.eventPoint) : null;
-    this.highScore = data.highScore ? new Points(data.highScore) : null;
-    this.highScore2 = data.highScore2 ? new Points(data.highScore2) : null;
-    this.highScoreTotal = data.highScoreTotal ? new Points(data.highScoreTotal) : null;
-    this.loungePoint = data.loungePoint ? new Points(data.loungePoint) : null;
-    this.api = api;
-  }
-}
-
-class Points {
-  constructor(data) {
-    this.scores = data.scores;
-    this.summaryTime = data.summaryTime;
-    this.count = data.count;
+  get isBoosting() {
+    if (!this.boostBeginDate) return false;
+    dayjs.extend(isBetween);
+    if (dayjs().isBetween(dayjs(this.boostBeginDate), dayjs(this.boostEndDate))) return true;
+    return false;
   }
 }
 
 const getEventBorders = async (eventId, api) => {
   const response = await api.query(`/events/${eventId}/rankings/borders`);
-  return new Borders(response, api);
+  return response;
 };
 
 const getEventBorderPoints = async (eventId, api) => {
   const response = await api.query(`/events/${eventId}/rankings/borderPoints`);
-  return new BorderPoints(response, api);
+  return response;
 };
 
 const getEventSummaries = async (eventId, type, api) => {
@@ -89,11 +120,16 @@ const getEventIdolPointSummaries = async (eventId, idolId, api) => {
 };
 
 const getEventLogs = async (eventId, type, rank, options, api) => {
-  const response = await api.query(`/events/${eventId}/rankings/logs/${type}/${rank}`, options);
+  if (options && options.timeMin) options.timeMin = dayjs(options.timeMin).format();
+  const response = await api.query(
+    `/events/${eventId}/rankings/logs/${type}/${rank.join()}`,
+    options
+  );
   return response;
 };
 
 const getEventIdolPointLogs = async (eventId, idolId, rank, options, api) => {
+  if (options && options.timeMin) options.timeMin = dayjs(options.timeMin).format();
   const response = await api.query(
     `/events/${eventId}/rankings/logs/idolPoint/${idolId}/${rank}`,
     options
