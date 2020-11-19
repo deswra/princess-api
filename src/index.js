@@ -14,7 +14,7 @@ const {
   getEventIdolPointLogs,
 } = require('./event');
 const { Lounge, getLoungeEventHistory, getLoungeEventLogs, searchLounges } = require('./lounge');
-const { getIdFromName } = require('./helpers');
+const { getIdFromName, getNameFromId } = require('./helpers');
 
 const HOST = 'https://api.matsurihi.me/mltd/v1/';
 
@@ -26,6 +26,7 @@ class Princess {
   }
 
   static getIdolIdFromName = (name) => getIdFromName(name);
+  static getIdolNameFromId = (idolId) => getNameFromId(idolId);
 
   getVersion = async (type, version) => {
     const response = await this.query(
