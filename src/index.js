@@ -14,6 +14,7 @@ const {
   getEventIdolPointLogs,
 } = require('./event');
 const { Lounge, getLoungeEventHistory, getLoungeEventLogs, searchLounges } = require('./lounge');
+const { getIdFromName } = require('./helpers');
 
 const HOST = 'https://api.matsurihi.me/mltd/v1/';
 
@@ -23,6 +24,8 @@ class Princess {
     this.prettyPrint = options.prettyPrint || false;
     this.host = options.host || HOST;
   }
+
+  static getIdolIdFromName = (name) => getIdFromName(name);
 
   getVersion = async (type, version) => {
     const response = await this.query(
