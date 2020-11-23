@@ -63,6 +63,10 @@ class Card {
     return getRarityName(this.rarity);
   }
 
+  get link() {
+    return `${this.api.site}cards/${this.id}`;
+  }
+
   get totalAppealMaxAwakened() {
     return this.vocalMaxAwakened + this.danceMaxAwakened + this.visualMaxAwakened;
   }

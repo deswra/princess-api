@@ -17,12 +17,18 @@ const { Lounge, getLoungeEventHistory, getLoungeEventLogs, searchLounges } = req
 const { getIdFromName, getNameFromId } = require('./helpers');
 
 const HOST = 'https://api.matsurihi.me/mltd/v1/';
+const SITE = 'https://mltd.matsurihi.me/';
 
 class Princess {
   constructor(options = {}) {
     this.server = options.server || 'ja';
     this.prettyPrint = options.prettyPrint || false;
     this.host = options.host || HOST;
+    if (this.server === 'ja') {
+      this.site = SITE;
+    } else {
+      this.site = `${SITE}${this.server}/`;
+    }
   }
 
   static getIdolIdFromName = (name) => getIdFromName(name);
