@@ -74,6 +74,13 @@ class Princess {
     return response.map((item) => new Event(item, this));
   };
 
+  getCurrentEvent = async () => {
+    const now = dayjs();
+    const response = await this.getEvents({ at: now });
+    if (response.length > 0) return new Event(response[0], this);
+    return null;
+  };
+
   getBorders = (eventId) => getEventBorders(eventId, this);
 
   getBorderPoints = (eventId) => getEventBorderPoints(eventId, this);

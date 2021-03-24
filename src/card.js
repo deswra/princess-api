@@ -55,6 +55,19 @@ class Card {
     return getNameFromId(this.idolId);
   }
 
+  get rarityName() {
+    switch (this.rarity) {
+      case 1:
+        return 'N';
+      case 2:
+        return 'R';
+      case 3:
+        return 'SR';
+      case 4:
+        return 'SSR';
+    }
+  }
+
   get idolTypeObj() {
     return new IdolType(this.idolType);
   }
@@ -285,19 +298,6 @@ class Skill {
     }
   }
 }
-
-const getRarityName = (rarity) => {
-  switch (rarity) {
-    case 1:
-      return 'N';
-    case 2:
-      return 'R';
-    case 3:
-      return 'SR';
-    case 4:
-      return 'SSR';
-  }
-};
 
 const getAttributeName = (attribute) => {
   switch (attribute) {

@@ -56,6 +56,8 @@ class Event {
         return 'Platinum Star Twin Stage';
       case 11:
         return 'Platinum Star Tune';
+      case 12:
+        return 'Platinum Star Twin Stage';
     }
   }
 
