@@ -72,10 +72,6 @@ class Card {
     return new IdolType(this.idolType);
   }
 
-  get rarityName() {
-    return getRarityName(this.rarity);
-  }
-
   get link() {
     return `${this.api.site}cards/${this.id}`;
   }
