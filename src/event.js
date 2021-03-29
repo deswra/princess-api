@@ -98,7 +98,7 @@ class Schedule {
   }
 
   get isBoosting() {
-    if (!this.boostBeginDate) return false;
+    if (!this.boostBeginDate) return null;
     dayjs.extend(isBetween);
     if (dayjs().isBetween(dayjs(this.boostBeginDate), dayjs(this.boostEndDate))) return true;
     return false;
