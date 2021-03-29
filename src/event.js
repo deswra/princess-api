@@ -58,6 +58,10 @@ class Event {
         return 'Platinum Star Tune';
       case 12:
         return 'Platinum Star Twin Stage';
+      case 13:
+        return 'Platinum Star Tale';
+      case 14:
+        return 'THEATER TALK PARTY☆';
     }
   }
 
