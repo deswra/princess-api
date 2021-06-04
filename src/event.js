@@ -1,5 +1,4 @@
-const dayjs = require('dayjs');
-const isBetween = require('dayjs/plugin/isBetween');
+const { DateTime } = require('luxon');
 const { getLoungeEventLogs } = require('./lounge');
 
 class Event {
@@ -7,7 +6,7 @@ class Event {
     this.id = data.id;
     this.type = data.type;
     this.appealType = data.appealType;
-    this.schedule = new Schedule(data.schedule);
+    this.schedule = new Schedule(data.schedule, api);
     this.name = data.name;
     this.api = api;
   }
@@ -18,8 +17,7 @@ class Event {
   }
 
   get hasBorders() {
-    if (this.type === 1 || this.type === 2 || this.type === 6 || this.type === 7 || this.type === 9)
-      return false;
+    if (this.type === 1 || this.type === 2 || this.type === 6 || this.type === 7 || this.type === 9) return false;
     return true;
   }
 
@@ -75,32 +73,36 @@ class Event {
 
   getLogs = (type, rank, options) => getEventLogs(this.id, type, rank, options, this.api);
 
-  getIdolPointLogs = (idolId, rank, options) =>
-    getEventIdolPointLogs(this.id, idolId, rank, options, this.api);
+  getIdolPointLogs = (idolId, rank, options) => getEventIdolPointLogs(this.id, idolId, rank, options, this.api);
 
   getLoungeLogs = (loungeId, options) => getLoungeEventLogs(loungeId, this.id, options, this.api);
 }
 
 class Schedule {
-  constructor(data) {
+  constructor(data, api) {
     this.beginDate = data.beginDate;
     this.endDate = data.endDate;
     this.pageBeginDate = data.pageBeginDate;
     this.pageEndDate = data.pageEndDate;
     this.boostBeginDate = data.boostBeginDate;
     this.boostEndDate = data.boostEndDate;
+    this.api = api;
   }
 
   get isCurrent() {
-    dayjs.extend(isBetween);
-    if (dayjs().isBetween(dayjs(this.beginDate), dayjs(this.endDate))) return true;
+    const now = DateTime.local();
+    const beginDate = DateTime.fromISO(this.beginDate, { setZone: true });
+    const endDate = DateTime.fromISO(this.endDate, { setZone: true });
+    if (now >= beginDate && now <= endDate) return true;
     return false;
   }
 
   get isBoosting() {
     if (!this.boostBeginDate) return null;
-    dayjs.extend(isBetween);
-    if (dayjs().isBetween(dayjs(this.boostBeginDate), dayjs(this.boostEndDate))) return true;
+    const now = DateTime.local();
+    const boostBeginDate = DateTime.fromISO(this.boostBeginDate, { setZone: true });
+    const boostEndDate = DateTime.fromISO(this.boostEndDate, { setZone: true });
+    if (now >= boostBeginDate && now <= boostEndDate) return true;
     return false;
   }
 }
@@ -126,20 +128,14 @@ const getEventIdolPointSummaries = async (eventId, idolId, api) => {
 };
 
 const getEventLogs = async (eventId, type, rank, options, api) => {
-  if (options && options.timeMin) options.timeMin = dayjs(options.timeMin).format();
-  const response = await api.query(
-    `/events/${eventId}/rankings/logs/${type}/${rank.join()}`,
-    options
-  );
+  if (options?.timeMin) options.timeMin = DateTime.fromISO(options.timeMin).setZone(api.jpZone).toString();
+  const response = await api.query(`/events/${eventId}/rankings/logs/${type}/${rank.join()}`, options);
   return response;
 };
 
 const getEventIdolPointLogs = async (eventId, idolId, rank, options, api) => {
-  if (options && options.timeMin) options.timeMin = dayjs(options.timeMin).format();
-  const response = await api.query(
-    `/events/${eventId}/rankings/logs/idolPoint/${idolId}/${rank}`,
-    options
-  );
+  if (options?.timeMin) options.timeMin = DateTime.fromISO(options.timeMin).setZone(api.jpZone).toString();
+  const response = await api.query(`/events/${eventId}/rankings/logs/idolPoint/${idolId}/${rank}`, options);
   return response;
 };
 
