@@ -21,6 +21,10 @@ class Event {
     return true;
   }
 
+  get hasIdolBorders() {
+    return this.type === 5;
+  }
+
   get appealTypeName() {
     switch (this.appealType) {
       case 1:
