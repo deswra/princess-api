@@ -109,6 +109,10 @@ class Card {
         return 'Limited';
       case 'gasha2':
         return 'FES';
+      case 'gasha4':
+        return 'Selection Limited SR';
+      case 'gasha5':
+        return 'Second Hairstyle';
       case 'event0':
         return 'MilliColle';
       case 'event1':
@@ -150,26 +154,22 @@ class Card {
         return 'Extra Points';
       case 10:
         return '3rd Anniversary';
+      case 14:
+        return '4th Anniversary';
     }
   }
 
   getIcon(awakened = false) {
-    return `https://storage.matsurihi.me/mltd/icon_l/${this.resourceId}_${
-      awakened ? '1' : '0'
-    }.png`;
+    return `https://storage.matsurihi.me/mltd/icon_l/${this.resourceId}_${awakened ? '1' : '0'}.png`;
   }
 
   getCardImage(awakened = false) {
-    return `https://storage.matsurihi.me/mltd/card/${this.resourceId}_${
-      awakened ? '1' : '0'
-    }_b.png`;
+    return `https://storage.matsurihi.me/mltd/card/${this.resourceId}_${awakened ? '1' : '0'}_b.png`;
   }
 
   getArt(awakened = false) {
     if (this.rarity !== 4 || this.category === 'event3') return this.getCardImage(awakened);
-    return `https://storage.matsurihi.me/mltd/card_bg/${this.resourceId}_${
-      awakened ? '1' : '0'
-    }.png`;
+    return `https://storage.matsurihi.me/mltd/card_bg/${this.resourceId}_${awakened ? '1' : '0'}.png`;
   }
 }
 
@@ -242,55 +242,49 @@ class Skill {
   get translatedDescription() {
     switch (this.effectId) {
       case 1:
-        return `Every ${this.interval} seconds, there is a ${
-          this.probability
-        }% chance that ${getEvaluationType(this.evaluation)} note scores will increase by ${
-          this.value[0]
-        }% for ${this.duration} seconds.`;
+        return `Every ${this.interval} seconds, there is a ${this.probability}% chance that ${getEvaluationType(
+          this.evaluation
+        )} note scores will increase by ${this.value[0]}% for ${this.duration} seconds.`;
       case 2:
         return `Every ${this.interval} seconds, there is a ${this.probability}% chance that combo bonuses will increase by ${this.value[0]}% for ${this.duration} seconds.`;
       case 3:
-        return `Every ${this.interval} seconds, there is a ${
-          this.probability
-        }% chance that ${getEvaluationType(this.evaluation)} notes will recover ${
-          this.value[0]
-        } life for ${this.duration} seconds.`;
+        return `Every ${this.interval} seconds, there is a ${this.probability}% chance that ${getEvaluationType(
+          this.evaluation
+        )} notes will recover ${this.value[0]} life for ${this.duration} seconds.`;
       case 4:
         return `Every ${this.interval} seconds, there is a ${this.probability}% chance that life does not decrease for ${this.duration} seconds.`;
       case 5:
         return `Every ${this.interval} seconds, there is a ${
           this.probability
-        }% chance that combos will continue through ${getEvaluationType(
-          this.evaluation
-        )} notes for ${this.duration} seconds.`;
-      case 6:
-        return `Every ${this.interval} seconds, there is a ${
-          this.probability
-        }% chance that ${getEvaluationType(this.evaluation)} notes will become Perfect notes for ${
+        }% chance that combos will continue through ${getEvaluationType(this.evaluation)} notes for ${
           this.duration
         } seconds.`;
+      case 6:
+        return `Every ${this.interval} seconds, there is a ${this.probability}% chance that ${getEvaluationType(
+          this.evaluation
+        )} notes will become Perfect notes for ${this.duration} seconds.`;
       case 7:
-        return `Every ${this.interval} seconds, there is a ${
-          this.probability
-        }% chance that ${getEvaluationType(this.evaluation)} note scores will increase by ${
-          this.value[0]
-        }% and combo bonuses will increase by ${this.value[1]}% for ${this.duration} seconds`;
+        return `Every ${this.interval} seconds, there is a ${this.probability}% chance that ${getEvaluationType(
+          this.evaluation
+        )} note scores will increase by ${this.value[0]}% and combo bonuses will increase by ${this.value[1]}% for ${
+          this.duration
+        } seconds`;
       case 8:
-        return `Every ${this.interval} seconds, there is a ${
-          this.probability
-        }% chance that ${getEvaluationType(this.evaluation)} note scores will increase by ${
-          this.value[0]
-        }% for ${this.duration} seconds and ${
+        return `Every ${this.interval} seconds, there is a ${this.probability}% chance that ${getEvaluationType(
+          this.evaluation
+        )} note scores will increase by ${this.value[0]}% for ${this.duration} seconds and ${
           this.value[1]
         } life will be recovered for every ${getEvaluationType(this.evaluation2)} note.`;
       case 10:
         return `Every ${this.interval} seconds, there is a ${this.probability}% chance that ${
           this.value[1]
-        } life will be consumed so that ${getEvaluationType(
-          this.evaluation
-        )} note scores increase by ${this.value[0]}% for ${this.duration} seconds`;
+        } life will be consumed so that ${getEvaluationType(this.evaluation)} note scores increase by ${
+          this.value[0]
+        }% for ${this.duration} seconds`;
       case 11:
         return `Every ${this.interval} seconds, there is a ${this.probability}% chance that ${this.value[1]} life will be consumed so that combo bonuses increase by ${this.value[0]}% for ${this.duration} seconds`;
+      case 12:
+        return `Every ${this.interval} seconds, there is a ${this.probability}% chance to increase other skills's score up and combo bonus effect by ${this.value[0]}%.`;
     }
   }
 }

@@ -17,7 +17,8 @@ class Event {
   }
 
   get hasBorders() {
-    if (this.type === 1 || this.type === 2 || this.type === 6 || this.type === 7 || this.type === 9) return false;
+    if (this.type === 1 || this.type === 2 || this.type === 6 || this.type === 7 || this.type === 9 || this.type === 14)
+      return false;
     return true;
   }
 
