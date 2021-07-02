@@ -284,7 +284,7 @@ class Skill {
       case 11:
         return `Every ${this.interval} seconds, there is a ${this.probability}% chance that ${this.value[1]} life will be consumed so that combo bonuses increase by ${this.value[0]}% for ${this.duration} seconds`;
       case 12:
-        return `Every ${this.interval} seconds, there is a ${this.probability}% chance to increase other skills's score up and combo bonus effect by ${this.value[0]}%.`;
+        return `Every ${this.interval} seconds, there is a ${this.probability}% chance to increase other skills's score up and combo bonus effectiveness by ${this.value[0]}%.`;
     }
   }
 }
