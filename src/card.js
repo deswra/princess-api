@@ -110,7 +110,7 @@ class Card {
       case 'gasha2':
         return 'FES';
       case 'gasha4':
-        return 'Selection Limited SR';
+        return 'Premium Pickup';
       case 'gasha5':
         return 'Second Hairstyle';
       case 'event0':
