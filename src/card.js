@@ -127,6 +127,8 @@ class Card {
         return 'MilliColle';
       case 'other':
         return 'Other';
+      default:
+        return this.category;
     }
   }
 
@@ -156,6 +158,8 @@ class Card {
         return '3rd Anniversary';
       case 14:
         return '4th Anniversary';
+      default:
+        return this.extraType;
     }
   }
 
@@ -285,6 +289,8 @@ class Skill {
         return `Every ${this.interval} seconds, there is a ${this.probability}% chance that ${this.value[1]} life will be consumed so that combo bonuses increase by ${this.value[0]}% for ${this.duration} seconds`;
       case 12:
         return `Every ${this.interval} seconds, there is a ${this.probability}% chance to increase other skills's score up and combo bonus effectiveness by ${this.value[0]}%.`;
+      default:
+        return this.description;
     }
   }
 }

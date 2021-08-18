@@ -65,6 +65,8 @@ class Event {
         return 'Platinum Star Tale';
       case 14:
         return 'THEATER TALK PARTY☆';
+      default:
+        return this.type;
     }
   }
 
