@@ -4,8 +4,21 @@ const { DateTime } = require('luxon');
 
 const { AppVersion, AssetVersion } = require('./version');
 const { Card } = require('./card');
-const { Event, getEventBorders, getEventBorderPoints, getEventSummaries, getEventIdolPointSummaries, getEventLogs, getEventIdolPointLogs } = require('./event');
-const { Lounge, getLoungeEventHistory, getLoungeEventLogs, searchLounges } = require('./lounge');
+const {
+  Event,
+  getEventBorders,
+  getEventBorderPoints,
+  getEventSummaries,
+  getEventIdolPointSummaries,
+  getEventLogs,
+  getEventIdolPointLogs,
+} = require('./event');
+const {
+  Lounge,
+  getLoungeEventHistory,
+  getLoungeEventLogs,
+  searchLounges,
+} = require('./lounge');
 const { getIdFromName, getNameFromId } = require('./helpers');
 
 const HOST = 'https://api.matsurihi.me/mltd/v1/';
@@ -28,7 +41,9 @@ class Princess {
   static getIdolNameFromId = (idolId) => getNameFromId(idolId);
 
   getVersion = async (type, version) => {
-    const response = await this.query(`/version/${type ? type : 'latest'}${version ? `/${version}` : ''}`);
+    const response = await this.query(
+      `/version/${type ? type : 'latest'}${version ? `/${version}` : ''}`
+    );
     switch (type) {
       case 'apps':
         if (version) return new AppVersion(response, this);
@@ -60,7 +75,8 @@ class Princess {
   };
 
   getEvents = async (options) => {
-    if (options?.at) options.at = DateTime.fromISO(options.at).setZone(this.jpZone).toString();
+    if (options?.at)
+      options.at = DateTime.fromISO(options.at).setZone(this.jpZone).toString();
     const response = await this.query('/events', options);
     return response.map((item) => new Event(item, this));
   };
@@ -78,11 +94,14 @@ class Princess {
 
   getSummaries = (eventId, type) => getEventSummaries(eventId, type, this);
 
-  getIdolPointSummaries = (eventId, idolId) => getEventIdolPointSummaries(eventId, idolId, this);
+  getIdolPointSummaries = (eventId, idolId) =>
+    getEventIdolPointSummaries(eventId, idolId, this);
 
-  getLogs = async (eventId, type, rank, options) => getEventLogs(eventId, type, rank, options, this);
+  getLogs = async (eventId, type, rank, options) =>
+    getEventLogs(eventId, type, rank, options, this);
 
-  getIdolPointLogs = async (eventId, idolId, rank, options) => getEventIdolPointLogs(eventId, idolId, rank, options, this);
+  getIdolPointLogs = async (eventId, idolId, rank, options) =>
+    getEventIdolPointLogs(eventId, idolId, rank, options, this);
 
   getLounge = async (loungeId) => {
     const response = await this.query(`/lounges/${loungeId}`);
@@ -91,12 +110,13 @@ class Princess {
 
   getEventHistory = async (loungeId) => getLoungeEventHistory(loungeId, this);
 
-  getLoungeEventLogs = async (loungeId, eventId, options) => getLoungeEventLogs(loungeId, eventId, options, this);
+  getLoungeEventLogs = async (loungeId, eventId, options) =>
+    getLoungeEventLogs(loungeId, eventId, options, this);
 
   searchLounges = async (name) => searchLounges(name, this);
 
-  query = (path, queries) =>
-    fetch(
+  query = (path, queries) => {
+    return fetch(
       queryString.stringifyUrl(
         {
           url: `${this.host}${this.server}${path}`,
@@ -105,6 +125,7 @@ class Princess {
         { arrayFormat: 'comma' }
       )
     ).then((res) => res.json());
+  };
 }
 
 module.exports = Princess;

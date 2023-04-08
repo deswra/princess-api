@@ -228,17 +228,17 @@ const chars = {
 const idolTypes = {
   1: {
     name: 'princess',
-    icon: 'https://i.imgur.com/ZwZZnea.png',
+    icon: 'https://mltd.matsurihi.me/image/card_icon/icon_mark_L_grp_000.png',
     color: '#ffbdd0',
   },
   2: {
     name: 'fairy',
-    icon: 'https://i.imgur.com/hQ8UKEf.png',
+    icon: 'https://mltd.matsurihi.me/image/card_icon/icon_mark_L_grp_001.png',
     color: '#9ac7ff',
   },
   3: {
     name: 'angel',
-    icon: 'https://i.imgur.com/1sVQ4Cp.png',
+    icon: 'https://mltd.matsurihi.me/image/card_icon/icon_mark_L_grp_002.png',
     color: '#ffe25d',
   },
   4: {
@@ -246,7 +246,7 @@ const idolTypes = {
   },
   5: {
     name: 'extra',
-    icon: 'https://i.imgur.com/vjIPio9.png',
+    icon: 'https://mltd.matsurihi.me/image/card_icon/icon_mark_L_grp_004.png',
     color: '#25b340',
   },
 };
